@@ -58,6 +58,7 @@ class Template(models.Model):
     tax_class = models.CharField(max_length=255, null=True, default='')
     reviews_allowed = models.BooleanField(default=True)
     position = models.IntegerField(default=0)
+    attributes = models.ManyToManyField('Attribute')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -70,7 +71,7 @@ class Attribute(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.name
 
 
@@ -81,7 +82,7 @@ class AttributeOption(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.option
 
 
@@ -96,7 +97,7 @@ class Variation(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.sku
 
 
@@ -104,5 +105,5 @@ class VariationAttribute(models.Model):
     name = models.ForeignKey(to=Attribute, on_delete=models.PROTECT)
     value = models.ForeignKey(to=AttributeOption, on_delete=models.PROTECT)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.name
