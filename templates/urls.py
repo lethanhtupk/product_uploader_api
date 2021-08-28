@@ -10,7 +10,7 @@ urlpatterns = [
     ),
     re_path(
         'categories/(?P<pk>[0-9]+)$',
-        views.CategoryDetails.name,
-        name=views.CategorySerializer.name
+        views.CategoryDetails.as_view(),
+        name=views.CategoryDetails.name
     )
 ]
