@@ -68,6 +68,7 @@ class Template(models.Model):
 
 class Attribute(models.Model):
     name = models.CharField(max_length=255)
+    is_primary = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 
@@ -90,6 +91,7 @@ class Variation(models.Model):
     template = models.ForeignKey(
         to=Template, on_delete=models.CASCADE, related_name='variations')
     sku = models.CharField(max_length=255)
+    is_default = models.BooleanField(default=False)
     tax_class = models.CharField(max_length=255, default="parent")
     sale_price = models.FloatField()
     regular_price = models.FloatField()
