@@ -5,10 +5,10 @@ from django.db.models.deletion import CASCADE
 
 
 class Category(models.Model):
-    id = models.IntegerField(primary_key=True)
+    woo_id = models.IntegerField()
     name = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class Template(models.Model):
@@ -40,15 +40,28 @@ class Template(models.Model):
         (SHIPPING, 'shipping'),
         (NONE, 'none'),
     ]
-    sku = models.CharField(max_length=255)
+    SIMPLE = 'simple'
+    GROUPED = 'grouped'
+    EXTERNAL = 'external'
+    VARIABLE = 'variable'
+    TYPE_CHOICES = [
+        (SIMPLE, 'simple'),
+        (GROUPED, 'grouped'),
+        (EXTERNAL, 'external'),
+        (VARIABLE, 'variable'),
+    ]
+    categories = models.ManyToManyField(Category)
+    type = models.CharField(
+        max_length=255, choices=TYPE_CHOICES, default=VARIABLE)
+    sku = models.CharField(max_length=255, unique=True)
     name = models.CharField(max_length=255)
     status = models.CharField(
         max_length=255, choices=STATUS_CHOICES, default=PUBLISH)
     featured = models.BooleanField(default=False)
     catalog_visibility = models.CharField(
         max_length=255, choices=CATALOG_VISIBILITY_CHOICES, default=VISIBLE)
-    description = models.TextField()
-    short_description = models.TextField()
+    description = models.TextField(blank=True)
+    short_description = models.TextField(blank=True)
     date_on_sale_from = models.DateField(null=True)
     date_on_sale_to = models.DateField(null=True)
     tax_status = models.CharField(
@@ -70,7 +83,7 @@ class Attribute(models.Model):
     name = models.CharField(max_length=255)
     is_primary = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
@@ -81,7 +94,7 @@ class AttributeOption(models.Model):
     attribute = models.ForeignKey(
         to=Attribute, on_delete=models.CASCADE, related_name='options')
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.option
@@ -90,14 +103,14 @@ class AttributeOption(models.Model):
 class Variation(models.Model):
     template = models.ForeignKey(
         to=Template, on_delete=models.CASCADE, related_name='variations')
-    sku = models.CharField(max_length=255)
+    sku = models.CharField(max_length=255, unique=True)
     is_default = models.BooleanField(default=False)
     tax_class = models.CharField(max_length=255, default="parent")
     sale_price = models.FloatField()
     regular_price = models.FloatField()
     position = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.sku
@@ -106,6 +119,10 @@ class Variation(models.Model):
 class VariationAttribute(models.Model):
     name = models.ForeignKey(to=Attribute, on_delete=models.PROTECT)
     value = models.ForeignKey(to=AttributeOption, on_delete=models.PROTECT)
+    variation = models.ForeignKey(
+        to=Variation, on_delete=models.CASCADE, related_name='attributes')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
