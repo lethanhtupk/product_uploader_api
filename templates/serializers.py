@@ -104,7 +104,12 @@ class TemplateSerializer(serializers.ModelSerializer):
             variation = Variation.objects.create(
                 template=template, **variation_data)
             for attribute_data in attributes_data:
+                attribute_data = dict(attribute_data)
+                attribute = Attribute.objects.get(
+                    pk=attribute_data.get('name'))
+                attribute_option = AttributeOption.objects.get(
+                    pk=attribute_data.get('value'))
                 VariationAttribute.objects.create(
-                    variation=variation, **attribute_data)
+                    variation=variation, name=attribute, value=attribute_option)
 
         return template
