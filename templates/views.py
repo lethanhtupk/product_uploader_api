@@ -35,6 +35,7 @@ class CategoryDetails(generics.RetrieveUpdateDestroyAPIView):
 class TemplateList(generics.ListCreateAPIView):
     name = 'template-list'
     queryset = Template.objects.all()
+    search_fields = ['name', ]
     serializer_class = TemplateSerializer
 
 
@@ -47,6 +48,7 @@ class TemplateDetails(generics.RetrieveUpdateDestroyAPIView):
 class AttributeList(generics.ListCreateAPIView):
     name = 'attribute-list'
     queryset = Attribute.objects.all()
+    search_fields = ['name', ]
     serializer_class = AttributeSerializer
 
 
