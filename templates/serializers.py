@@ -25,18 +25,11 @@ class AttributeOptionSerializer(serializers.ModelSerializer):
 
 
 class AttributeSerializer(serializers.ModelSerializer):
-    options = AttributeOptionSerializer(many=True)
+    options = AttributeOptionSerializer(many=True, required=False)
 
     class Meta:
         model = Attribute
         fields = '__all__'
-
-    def create(self, validated_data):
-        options_data = validated_data.pop('options')
-        attribute = Attribute.objects.create(**validated_data)
-        for option_data in options_data:
-            AttributeOption.objects.create(attribute=attribute, **option_data)
-        return attribute
 
 
 class VariationAttributeSerializer(serializers.ModelSerializer):
