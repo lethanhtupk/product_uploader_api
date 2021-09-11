@@ -1,5 +1,4 @@
 from django.db import models
-from django.db.models.deletion import CASCADE
 
 # Create your models here.
 
@@ -50,11 +49,9 @@ class Template(models.Model):
         (EXTERNAL, 'external'),
         (VARIABLE, 'variable'),
     ]
-    categories = models.ManyToManyField(Category)
     type = models.CharField(
         max_length=255, choices=TYPE_CHOICES, default=VARIABLE)
-    sku = models.CharField(max_length=255, unique=True)
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     status = models.CharField(
         max_length=255, choices=STATUS_CHOICES, default=PUBLISH)
     featured = models.BooleanField(default=False)
@@ -71,15 +68,16 @@ class Template(models.Model):
     tax_class = models.CharField(max_length=255, null=True, default='')
     reviews_allowed = models.BooleanField(default=True)
     position = models.IntegerField(default=0)
-    attributes = models.ManyToManyField('Attribute')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.sku
+        return self.name
 
 
 class Attribute(models.Model):
+    template = models.ForeignKey(
+        Template, related_name="attributes", on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length=255)
     is_primary = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -90,20 +88,21 @@ class Attribute(models.Model):
 
 
 class AttributeOption(models.Model):
-    option = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, null=True)
+    code = models.CharField(max_length=255)
     attribute = models.ForeignKey(
         to=Attribute, on_delete=models.CASCADE, related_name='options')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.option
+        return self.code
 
 
 class Variation(models.Model):
     template = models.ForeignKey(
         to=Template, on_delete=models.CASCADE, related_name='variations')
-    sku = models.CharField(max_length=255, unique=True)
+    sku = models.CharField(max_length=255)
     is_default = models.BooleanField(default=False)
     tax_class = models.CharField(max_length=255, default="parent")
     sale_price = models.FloatField()
@@ -123,6 +122,3 @@ class VariationAttribute(models.Model):
         to=Variation, on_delete=models.CASCADE, related_name='attributes')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return self.name
