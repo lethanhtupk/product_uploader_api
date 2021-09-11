@@ -21,7 +21,7 @@ class AttributeOptionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AttributeOption
-        fields = ('option',)
+        fields = ('code', 'name')
 
 
 class AttributeSerializer(serializers.ModelSerializer):
@@ -33,10 +33,12 @@ class AttributeSerializer(serializers.ModelSerializer):
 
 
 class VariationAttributeSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(max_length=255)
+    value = serializers.CharField(max_length=255)
 
     class Meta:
         model = VariationAttribute
-        exclude = ('variation',)
+        fields = ['name', 'value']
 
 
 class VariationSerializer(serializers.ModelSerializer):
@@ -48,7 +50,6 @@ class VariationSerializer(serializers.ModelSerializer):
 
 
 class TemplateSerializer(serializers.ModelSerializer):
-    categories = CategorySerializer(many=True)
     attributes = AttributeSerializer(many=True)
     variations = VariationSerializer(many=True)
 
@@ -72,21 +73,15 @@ class TemplateSerializer(serializers.ModelSerializer):
         return data
 
     def create(self, validated_data):
-        categories_data = validated_data.pop('categories')
         attributes_data = validated_data.pop('attributes')
         variations_data = validated_data.pop('variations')
         template = Template.objects.create(**validated_data)
-        for category_data in categories_data:
-            category, _ = Category.objects.get_or_create(
-                **dict(category_data))
-            template.categories.add(category)
 
         for attribute_data in attributes_data:
             attribute_data = dict(attribute_data)
             options_data = attribute_data.pop('options')
             attribute, _ = Attribute.objects.get_or_create(
-                **attribute_data)
-            template.attributes.add(attribute)
+                **attribute_data, template=template)
             for option_data in options_data:
                 AttributeOption.objects.get_or_create(
                     attribute=attribute, **dict(option_data))
@@ -98,10 +93,12 @@ class TemplateSerializer(serializers.ModelSerializer):
                 template=template, **variation_data)
             for attribute_data in attributes_data:
                 attribute_data = dict(attribute_data)
+                # TODO: query attribute belong to a specific template
                 attribute = Attribute.objects.get(
-                    pk=attribute_data.get('name'))
+                    name=attribute_data.get('name'), template=template)
+                # TODO: query attribute option belong to specify attribute
                 attribute_option = AttributeOption.objects.get(
-                    pk=attribute_data.get('value'))
+                    code=attribute_data.get('value'), attribute=attribute)
                 VariationAttribute.objects.create(
                     variation=variation, name=attribute, value=attribute_option)
 
