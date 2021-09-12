@@ -116,8 +116,8 @@ class Variation(models.Model):
 
 
 class VariationAttribute(models.Model):
-    name = models.ForeignKey(to=Attribute, on_delete=models.PROTECT)
-    value = models.ForeignKey(to=AttributeOption, on_delete=models.PROTECT)
+    name = models.ForeignKey(to=Attribute, on_delete=models.CASCADE)
+    value = models.ForeignKey(to=AttributeOption, on_delete=models.CASCADE)
     variation = models.ForeignKey(
         to=Variation, on_delete=models.CASCADE, related_name='attributes')
     created_at = models.DateTimeField(auto_now_add=True)
