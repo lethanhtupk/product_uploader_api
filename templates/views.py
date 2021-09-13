@@ -13,6 +13,7 @@ from templates.serializers import (
     TemplateSerializer,
     AttributeSerializer,
     AttributeOptionSerializer,
+    TemplateViewSerializer,
     VariationSerializer,
     VariationAttributeSerializer,
 )
@@ -42,7 +43,11 @@ class TemplateList(generics.ListCreateAPIView):
 class TemplateDetails(generics.RetrieveUpdateDestroyAPIView):
     name = 'template-details'
     queryset = Template.objects.all()
-    serializer_class = TemplateSerializer
+
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return TemplateViewSerializer
+        return TemplateSerializer
 
 
 class AttributeList(generics.ListCreateAPIView):

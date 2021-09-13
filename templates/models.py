@@ -52,6 +52,7 @@ class Template(models.Model):
     type = models.CharField(
         max_length=255, choices=TYPE_CHOICES, default=VARIABLE)
     name = models.CharField(max_length=255, unique=True)
+    product_title = models.CharField(max_length=255, default='')
     status = models.CharField(
         max_length=255, choices=STATUS_CHOICES, default=PUBLISH)
     featured = models.BooleanField(default=False)

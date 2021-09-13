@@ -41,8 +41,25 @@ class VariationAttributeSerializer(serializers.ModelSerializer):
         fields = ['name', 'value']
 
 
+class VariationAttributeViewSerializer(serializers.ModelSerializer):
+    name = AttributeSerializer()
+    value = AttributeOptionSerializer()
+
+    class Meta:
+        model = VariationAttribute
+        fields = '__all__'
+
+
 class VariationSerializer(serializers.ModelSerializer):
     attributes = VariationAttributeSerializer(many=True)
+
+    class Meta:
+        model = Variation
+        exclude = ('template',)
+
+
+class VariationViewSerializer(serializers.ModelSerializer):
+    attributes = VariationAttributeViewSerializer(many=True)
 
     class Meta:
         model = Variation
@@ -103,3 +120,12 @@ class TemplateSerializer(serializers.ModelSerializer):
                     variation=variation, name=attribute, value=attribute_option)
 
         return template
+
+
+class TemplateViewSerializer(serializers.ModelSerializer):
+    attributes = AttributeSerializer(many=True)
+    variations = VariationViewSerializer(many=True)
+
+    class Meta:
+        model = Template
+        fields = '__all__'
