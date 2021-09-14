@@ -93,6 +93,7 @@ class AttributeOption(models.Model):
     code = models.CharField(max_length=255)
     attribute = models.ForeignKey(
         to=Attribute, on_delete=models.CASCADE, related_name='options')
+    is_default = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
