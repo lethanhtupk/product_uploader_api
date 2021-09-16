@@ -18,8 +18,8 @@ urlpatterns = [
         views.TemplateList.as_view(),
         name=views.TemplateList.name
     ),
-    re_path(
-        'templates/(?P<pk>[0-9]+)$',
+    path(
+        'templates/<uuid:pk>',
         views.TemplateDetails.as_view(),
         name=views.TemplateDetails.name
     ),
