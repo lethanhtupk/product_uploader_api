@@ -13,7 +13,7 @@ class Category(models.Model):
 
 
 class Template(models.Model):
-    id = models.UUIDField(
+    ID = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False)
     DRAFT = 'draft'
     PENDING = 'pending'
