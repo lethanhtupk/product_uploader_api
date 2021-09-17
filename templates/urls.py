@@ -8,18 +8,18 @@ urlpatterns = [
         views.CategoryList.as_view(),
         name=views.CategoryList.name
     ),
-    re_path(
-        'categories/(?P<pk>[0-9]+)$',
-        views.CategoryDetails.as_view(),
-        name=views.CategoryDetails.name
-    ),
-    # path(
-    #     'templates/',
-    #     views.TemplateList.as_view(),
-    #     name=views.TemplateList.name
+    # re_path(
+    #     'categories/(?P<pk>[0-9]+)$',
+    #     views.CategoryDetails.as_view(),
+    #     name=views.CategoryDetails.name
     # ),
     path(
-        'templates/<uuid:pk>',
+        'templates/',
+        views.TemplateList.as_view(),
+        name=views.TemplateList.name
+    ),
+    re_path(
+        'templates/(?P<pk>[0-9]+)$',
         views.TemplateDetails.as_view(),
         name=views.TemplateDetails.name
     ),
