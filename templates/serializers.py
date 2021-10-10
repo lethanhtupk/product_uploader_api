@@ -115,7 +115,7 @@ class TemplateSerializer(serializers.ModelSerializer):
                     name=attribute_data.get('name'), template=template)
                 # TODO: query attribute option belong to specify attribute
                 attribute_option = AttributeOption.objects.get(
-                    code=attribute_data.get('value'), attribute=attribute)
+                    name=attribute_data.get('value'), attribute=attribute)
                 VariationAttribute.objects.create(
                     variation=variation, name=attribute, value=attribute_option)
 
@@ -158,7 +158,7 @@ class TemplateSerializer(serializers.ModelSerializer):
                     name=attribute_data.get('name'), template=instance)
                 # TODO: query attribute option belong to specify attribute
                 attribute_option = AttributeOption.objects.get(
-                    code=attribute_data.get('value'), attribute=attribute)
+                    name=attribute_data.get('value'), attribute=attribute)
                 VariationAttribute.objects.create(
                     variation=variation, name=attribute, value=attribute_option)
 

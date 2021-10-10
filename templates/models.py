@@ -102,7 +102,7 @@ class AttributeOption(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.code
+        return self.name
 
 
 class Variation(models.Model):
