@@ -41,9 +41,12 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',
     'django_filters',
+    'djoser',
+    'rest_framework_simplejwt',
     'corsheaders',
     'templates',
     'products',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -136,7 +139,10 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
         'rest_framework.filters.SearchFilter',
-    )
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
 }
 
 CORS_ALLOWED_ORIGINS = [
@@ -144,6 +150,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
     "https://product-uploader-2f031.web.app",
 ]
+AUTH_USER_MODEL = 'users.CustomUser'
 
 # Configure Django App for Heroku.
 django_heroku.settings(locals())
