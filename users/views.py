@@ -8,6 +8,7 @@ from users.serializers import StoreSerializer, StoreViewSerializer
 class StoreList(generics.ListCreateAPIView):
     name = 'store-list'
     queryset = Store.objects.all()
+    search_fields = ['domain_name', ]
 
     def get_serializer_class(self):
         if self.request.method == 'GET':
