@@ -16,7 +16,7 @@ class StoreList(generics.ListCreateAPIView):
         return StoreSerializer
 
 
-class StoreDetail(generics.RetrieveUpdateAPIView):
+class StoreDetail(generics.RetrieveUpdateDestroyAPIView):
     name = 'store-details'
     queryset = Store.objects.all()
 
