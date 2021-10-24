@@ -1,7 +1,5 @@
 from django.db import models
 import uuid
-
-from django.db.models import base
 from django.contrib.auth.models import AbstractUser
 
 # Create your models here.

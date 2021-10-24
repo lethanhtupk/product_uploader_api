@@ -152,5 +152,11 @@ CORS_ALLOWED_ORIGINS = [
 ]
 AUTH_USER_MODEL = 'users.CustomUser'
 
+DJOSER = {
+    'SERIALIZERS': {
+        'current_user': 'users.serializers.PublicUserSerializer'
+    },
+}
+
 # Configure Django App for Heroku.
 django_heroku.settings(locals())
