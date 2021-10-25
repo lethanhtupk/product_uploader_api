@@ -14,7 +14,8 @@ class PublicUserSerializer(serializers.ModelSerializer):
     class Meta:
         ref_name = 'CustomUserSerializer'
         model = CustomUser
-        fields = ['id', 'email', 'first_name', 'last_name', 'username']
+        fields = ['id', 'email', 'first_name',
+                  'last_name', 'username', 'is_staff']
 
 
 class StoreSerializer(serializers.ModelSerializer):
