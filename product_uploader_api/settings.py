@@ -161,7 +161,7 @@ DJOSER = {
     'PERMISSIONS': {
         'user_create': ['product_uploader_api.custompermission.IsSuperAdmin'],
         'user_delete': ['product_uploader_api.custompermission.IsSuperAdmin'],
-        'user': ['product_uploader_api.custompermission.IsSuperAdmin'],
+        # 'user': ['product_uploader_api.custompermission.IsSuperAdmin'],
         'user_list': ['product_uploader_api.custompermission.IsSuperAdmin'],
     },
 }
