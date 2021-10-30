@@ -3,7 +3,7 @@ from rest_framework import permissions
 from rest_framework.permissions import (IsAuthenticated)
 from product_uploader_api.custompermission import ADMIN, SUPER_ADMIN, HasHigherPrivilege, IsAdmin, IsAdminOrAssigneeReadOnly
 from users.models import CustomUser, Store
-from users.serializers import PublicUserSerializer, StoreSerializer, StoreViewSerializer
+from users.serializers import PublicUserForViewSerializer, PublicUserSerializer, StoreSerializer, StoreViewSerializer
 
 # Create your views here.
 
@@ -41,7 +41,6 @@ class UserList(generics.ListCreateAPIView):
     name = 'user-list'
     permission_classes = (IsAuthenticated, IsAdmin)
     search_fields = ['username', ]
-    serializer_class = PublicUserSerializer
 
     def get_queryset(self):
         print(self.request.user.role)
@@ -52,9 +51,19 @@ class UserList(generics.ListCreateAPIView):
         # normal user.
         return []
 
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return PublicUserForViewSerializer
+        return PublicUserSerializer
+
 
 class UserDetails(generics.RetrieveUpdateDestroyAPIView):
     name = 'user-details'
     queryset = CustomUser.objects.all()
     permission_classes = (IsAuthenticated, IsAdmin, HasHigherPrivilege)
     serializer_class = PublicUserSerializer
+
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return PublicUserForViewSerializer
+        return PublicUserSerializer

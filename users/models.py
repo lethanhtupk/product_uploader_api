@@ -15,6 +15,7 @@ class CustomUser(AbstractUser):
     wp_username = models.CharField(max_length=255, blank=False)
     wp_password = models.CharField(max_length=255, blank=False)
     role = models.IntegerField(choices=Role.choices, default=1)
+    password = models.CharField(max_length=255, null=False, blank=False)
 
     def __str__(self):
         return self.get_full_name()
