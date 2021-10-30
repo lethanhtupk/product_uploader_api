@@ -12,4 +12,14 @@ urlpatterns = [
         views.StoreDetail.as_view(),
         name=views.StoreDetail.name
     ),
+    path(
+        'users/',
+        views.UserList.as_view(),
+        name=views.UserList.name
+    ),
+    re_path(
+        'users/(?P<pk>[0-9]+)$',
+        views.UserDetails.as_view(),
+        name=views.UserDetails.name
+    )
 ]

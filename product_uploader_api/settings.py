@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 import django_heroku
 from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -154,8 +155,19 @@ AUTH_USER_MODEL = 'users.CustomUser'
 
 DJOSER = {
     'SERIALIZERS': {
-        'current_user': 'users.serializers.PublicUserSerializer'
+        'current_user': 'users.serializers.PublicUserSerializer',
+        'user': 'users.serializers.PublicUserSerializer',
     },
+    'PERMISSIONS': {
+        'user_create': ['product_uploader_api.custompermission.IsSuperAdmin'],
+        'user_delete': ['product_uploader_api.custompermission.IsSuperAdmin'],
+        # 'user': ['product_uploader_api.custompermission.IsSuperAdmin'],
+        'user_list': ['product_uploader_api.custompermission.IsSuperAdmin'],
+    },
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
 }
 
 # Configure Django App for Heroku.

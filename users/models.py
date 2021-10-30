@@ -2,12 +2,19 @@ from django.db import models
 import uuid
 from django.contrib.auth.models import AbstractUser
 
+from product_uploader_api.custompermission import SUPER_ADMIN
+
 # Create your models here.
 
 
 class CustomUser(AbstractUser):
+    class Role(models.IntegerChoices):
+        USER = 1
+        ADMIN = 2
+        SUPER_ADMIN = 3
     wp_username = models.CharField(max_length=255, blank=False)
     wp_password = models.CharField(max_length=255, blank=False)
+    role = models.IntegerField(choices=Role.choices, default=1)
 
     def __str__(self):
         return self.get_full_name()

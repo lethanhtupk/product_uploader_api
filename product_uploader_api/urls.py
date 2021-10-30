@@ -40,6 +40,6 @@ urlpatterns = [
     path('api/auth/', include('djoser.urls')),
     path('api/auth/', include('djoser.urls.jwt')),
     path('api/', include('templates.urls')),
-    path('api/', include('products.urls')),
+    # path('api/', include('products.urls')),
     path('api/', include('users.urls'))
 ]
