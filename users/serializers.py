@@ -16,7 +16,7 @@ class PublicUserSerializer(serializers.ModelSerializer):
         ref_name = 'CustomUserSerializer'
         model = CustomUser
         fields = ['id', 'email', 'first_name',
-                  'last_name', 'username', 'role', 'password']
+                  'last_name', 'username', 'role', 'password', 'wp_username', 'wp_password']
 
     def validate(self, data):
         user = None
@@ -51,7 +51,7 @@ class PublicUserForViewSerializer(serializers.ModelSerializer):
         ref_name = 'CustomUserSerializer'
         model = CustomUser
         fields = ['id', 'email', 'first_name',
-                  'last_name', 'username', 'role']
+                  'last_name', 'username', 'role', 'wp_username', 'wp_password']
 
 
 class StoreSerializer(serializers.ModelSerializer):

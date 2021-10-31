@@ -11,7 +11,7 @@ from users.serializers import PublicUserForViewSerializer, PublicUserSerializer,
 class StoreList(generics.ListCreateAPIView):
     name = 'store-list'
     queryset = Store.objects.all()
-    permission_classes = (IsAuthenticated, IsAdmin)
+    permission_classes = (IsAuthenticated, IsAdminOrAssigneeReadOnly)
     search_fields = ['domain_name', ]
 
     def get_serializer_class(self):
@@ -23,7 +23,7 @@ class StoreList(generics.ListCreateAPIView):
         if self.request.user.role in [ADMIN, SUPER_ADMIN]:
             return Store.objects.all()
         else:
-            return Store.objects.filter(users=self.request.user)
+            return Store.objects.filter(users__id=self.request.user.id)
 
 
 class StoreDetail(generics.RetrieveUpdateDestroyAPIView):
