@@ -1,9 +1,12 @@
-from rest_framework import generics, request
-from rest_framework import permissions
+from django.contrib.auth.hashers import make_password
+from rest_framework import generics
+# from rest_framework import permissions
 from rest_framework.permissions import (IsAuthenticated)
 from product_uploader_api.custompermission import ADMIN, SUPER_ADMIN, HasHigherPrivilege, IsAdmin, IsAdminOrAssigneeReadOnly
 from users.models import CustomUser, Store
 from users.serializers import PublicUserForViewSerializer, PublicUserSerializer, StoreSerializer, StoreViewSerializer
+from rest_framework.response import Response
+
 
 # Create your views here.
 
@@ -67,3 +70,21 @@ class UserDetails(generics.RetrieveUpdateDestroyAPIView):
         if self.request.method == 'GET':
             return PublicUserForViewSerializer
         return PublicUserSerializer
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        if (hasattr(request.data, 'password')):
+            encoded_password = make_password(request.data['password'])
+            request.data['password'] = encoded_password
+        serializer = self.get_serializer(
+            instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        if getattr(instance, '_prefetched_objects_cache', None):
+            # If 'prefetch_related' has been applied to a queryset, we need to
+            # forcibly invalidate the prefetch cache on the instance.
+            instance._prefetched_objects_cache = {}
+
+        return Response(serializer.data)
