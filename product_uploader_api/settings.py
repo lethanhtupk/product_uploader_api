@@ -151,8 +151,8 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
     "https://product-uploader-2f031.web.app",
     "https://product-uploader-vsovr.ondigitalocean.app",
-    "https://dhg-ecommerce.com/",
-    "https://uploader.dhg-ecommerce.com/",
+    "https://dhg-ecommerce.com",
+    "https://uploader.dhg-ecommerce.com",
 ]
 AUTH_USER_MODEL = 'users.CustomUser'
 
