@@ -27,7 +27,8 @@ class Store(models.Model):
     domain_name = models.CharField(max_length=255, blank=False, unique=True)
     consumer_key = models.CharField(max_length=255, blank=False)
     secret_key = models.CharField(max_length=255, blank=False)
-    users = models.ManyToManyField(CustomUser, related_name='stores')
+    users = models.ManyToManyField(
+        CustomUser, related_name='stores', blank=True)
 
     def __str__(self):
         return self.domain_name
