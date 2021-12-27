@@ -46,11 +46,10 @@ class UserList(generics.ListCreateAPIView):
     search_fields = ['username', ]
 
     def get_queryset(self):
-        print(self.request.user.role)
         if (self.request.user.role == 2):
             return CustomUser.objects.filter(role=1)
         elif (self.request.user.role == 3):
-            return CustomUser.objects.filter(role__in=[1, 2])
+            return CustomUser.objects.filter(role__in=[1, 2, 3])
         # normal user.
         return []
 
