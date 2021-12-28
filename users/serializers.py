@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from users.models import CustomUser, Store
 from django.contrib.auth.hashers import make_password
+from product_uploader_api.custompermission import ADMIN, SUPER_ADMIN
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -28,9 +29,9 @@ class PublicUserSerializer(serializers.ModelSerializer):
                 'error_code': 'unauthenticate',
                 'detail': 'You need to login'
             }, code=401)
-        if user and user.role <= data.get('role', 1):
+        if user and (user.role <= data.get('role', 1) and user.role != SUPER_ADMIN and user.role != ADMIN):
             raise serializers.ValidationError(
-                {"role": ["You can\'t not create a new user with higher privilege"]})
+                {"role": ["You can\'t not create or update a new user with higher privilege"]})
         return data
 
     def create(self, validated_data):
@@ -40,6 +41,15 @@ class PublicUserSerializer(serializers.ModelSerializer):
         return super().create(validated_data)
 
     def update(self, instance, validated_data):
+        user = None
+        request = self.context.get('request')
+        if request and hasattr(request, 'user'):
+            user = request.user
+        if user.id != instance.id and user.role != SUPER_ADMIN:
+            raise serializers.ValidationError(
+                {"role": [
+                    "You can\'t not create or update a new user with higher privilege"]}
+            )
         plain_password = validated_data.get('password')
         encoded_password = make_password(plain_password)
         validated_data['password'] = encoded_password
