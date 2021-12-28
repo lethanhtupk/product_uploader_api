@@ -6,6 +6,7 @@ from product_uploader_api.custompermission import ADMIN, SUPER_ADMIN, HasHigherP
 from users.models import CustomUser, Store
 from users.serializers import PublicUserForViewSerializer, PublicUserSerializer, StoreSerializer, StoreViewSerializer
 from rest_framework.response import Response
+from django.db.models import Q
 
 
 # Create your views here.
@@ -47,7 +48,7 @@ class UserList(generics.ListCreateAPIView):
 
     def get_queryset(self):
         if (self.request.user.role == 2):
-            return CustomUser.objects.filter(role=1)
+            return CustomUser.objects.filter(Q(role=1) | Q(pk=self.request.user.id))
         elif (self.request.user.role == 3):
             return CustomUser.objects.filter(role__in=[1, 2, 3])
         # normal user.

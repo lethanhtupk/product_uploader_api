@@ -2,7 +2,6 @@ from django.db import models
 import uuid
 from django.contrib.auth.models import AbstractUser
 
-from product_uploader_api.custompermission import SUPER_ADMIN
 
 # Create your models here.
 

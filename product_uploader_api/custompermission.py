@@ -11,7 +11,7 @@ class IsAdmin(permissions.BasePermission):
 
 class HasHigherPrivilege(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
-        return request.user.role > obj.role or request.user.role == SUPER_ADMIN
+        return request.user.role > obj.role or request.user.role == SUPER_ADMIN or (request.user.role == ADMIN and request.user.id == obj.id)
 
 
 class IsAdminOrAssigneeReadOnly(permissions.BasePermission):
