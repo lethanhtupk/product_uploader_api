@@ -50,9 +50,10 @@ class PublicUserSerializer(serializers.ModelSerializer):
                 {"role": [
                     "You can\'t not create or update a new user with higher privilege"]}
             )
-        plain_password = validated_data.get('password')
-        encoded_password = make_password(plain_password)
-        validated_data['password'] = encoded_password
+        if (validated_data.get('password')):
+            plain_password = validated_data.get('password')
+            encoded_password = make_password(plain_password)
+            validated_data['password'] = encoded_password
         return super().update(instance, validated_data)
 
 
