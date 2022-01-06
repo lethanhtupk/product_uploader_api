@@ -106,6 +106,14 @@ class AttributeOption(models.Model):
 
 
 class Variation(models.Model):
+    IN_STOCK = 'instock'
+    OUT_OF_STOCK = 'outofstock'
+    STOCK_STATUS_CHOICES = [
+        (IN_STOCK, 'instock'),
+        (OUT_OF_STOCK, 'outofstock')
+    ]
+    stock_status = models.CharField(
+        max_length=255, choices=STOCK_STATUS_CHOICES, default=IN_STOCK)
     template = models.ForeignKey(
         to=Template, on_delete=models.CASCADE, related_name='variations')
     sku = models.CharField(max_length=255)
