@@ -36,7 +36,7 @@ from templates.serializers import (
 
 class TemplateList(generics.ListCreateAPIView):
     name = 'template-list'
-    queryset = Template.objects.all()
+    queryset = Template.objects.all().order_by('name')
     permission_classes = (IsAuthenticated, IsAdminOrReadOnly)
     search_fields = ['name', ]
     serializer_class = TemplateSerializer
