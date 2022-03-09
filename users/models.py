@@ -11,8 +11,6 @@ class CustomUser(AbstractUser):
         USER = 1
         ADMIN = 2
         SUPER_ADMIN = 3
-    wp_username = models.CharField(max_length=255, blank=False)
-    wp_password = models.CharField(max_length=255, blank=False)
     role = models.IntegerField(choices=Role.choices, default=1)
     password = models.CharField(max_length=255, null=False, blank=False)
 
@@ -26,6 +24,8 @@ class Store(models.Model):
     domain_name = models.CharField(max_length=255, blank=False, unique=True)
     consumer_key = models.CharField(max_length=255, blank=False)
     secret_key = models.CharField(max_length=255, blank=False)
+    wp_username = models.CharField(max_length=255, blank=False)
+    wp_password = models.CharField(max_length=255, blank=False)
     users = models.ManyToManyField(
         CustomUser, related_name='stores', blank=True)
 

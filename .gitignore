@@ -272,4 +272,6 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,linux,windows,python,django
-1
+
+# MACOS
+**/.DS_Store
